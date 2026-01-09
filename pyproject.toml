@@ -2,8 +2,13 @@
 name = "pulsegraph"
 version = "0.1.0"
 description = "PulseGraph - Knowledge graph for pulse signals"
-requires-python = ">=3.8"
-dependencies = []
+requires-python = ">=3.9"
+dependencies = [
+    "fastapi[standard]>=0.128.0",
+    "neo4j>=5.0.0",
+    "python-dotenv>=1.0.0",
+    "pydantic>=2.0.0",
+]
 
 [build-system]
 requires = ["hatchling"]

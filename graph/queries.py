@@ -102,3 +102,14 @@ def get_sentiment_delta(
         "a": a,
         "b": b,
     }
+
+def get_latest_fetch_by_type(driver: Driver, company_id: str, period: str) -> List[Dict[str, Any]]:
+    cypher = """
+    MATCH (c:Company {id: $company_id})-[:HAS_EVENT]->(e:Event {period: $period})
+    MATCH (e)-[:HAS_CLAIM]->(cl:Claim)<-[:SUPPORTS]-(s:Source)
+    WITH s.source_type AS source_type, max(datetime(s.fetched_at)) AS last_fetched
+    RETURN source_type, toString(last_fetched) AS last_fetched
+    """
+    with driver.session() as session:
+        rows = session.run(cypher, company_id=company_id, period=period)
+        return [{"source_type": r["source_type"], "last_fetched": r["last_fetched"]} for r in rows]

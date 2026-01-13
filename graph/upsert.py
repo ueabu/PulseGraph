@@ -7,7 +7,7 @@ import hashlib
 
 from neo4j import Driver
 
-from extract.contracts import SourceDoc
+from extract.contracts import SourceDoc, Claim
 
 
 def _id(*parts: str) -> str:
@@ -228,3 +228,49 @@ def upsert_signal(
             computed_at=computed_at_iso,
         ).single()
         return rec["id"]
+    
+    
+def upsert_claim_and_links(
+    driver,
+    *,
+    company_id: str,
+    source_id: str,
+    period: str,
+    claim: Claim,
+):
+    cypher = """
+    MERGE (cl:Claim {id: $claim_id})
+    SET cl.text = $text,
+        cl.claim_type = $claim_type,
+        cl.direction = $direction,
+        cl.timeframe = $timeframe,
+        cl.value = $value,
+        cl.unit = $unit,
+        cl.confidence = $confidence,
+        cl.evidence = $evidence
+
+    WITH cl
+    MATCH (c:Company {id: $company_id})
+    MATCH (s:Source {id: $source_id})
+
+    MERGE (c)-[:HAS_CLAIM {period: $period}]->(cl)
+    MERGE (s)-[:SUPPORTS]->(cl)
+    """
+
+    params = {
+        "claim_id": claim.claim_id,
+        "text": claim.text,
+        "claim_type": claim.claim_type,
+        "direction": claim.direction,
+        "timeframe": claim.timeframe,
+        "value": claim.value,
+        "unit": claim.unit,
+        "confidence": claim.confidence,
+        "evidence": claim.evidence,
+        "company_id": company_id,
+        "source_id": source_id,
+        "period": period,
+    }
+
+    with driver.session() as session:
+        session.run(cypher, params)

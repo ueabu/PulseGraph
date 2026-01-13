@@ -61,13 +61,11 @@ def google_serp_urls(
 
     resp = requests.post(BRIGHTDATA_REQUEST_URL, headers=_headers(), json=payload, timeout=90)
     resp.raise_for_status()
-
     # When using brd_json=1, the response is typically JSON.
     data = resp.json()
-
     # Be defensive: field names can vary based on engine/format.
     candidates = []
-    for key in ("organic", "organic_results", "results", "search_results"):
+    for key in ("organic", "organic_results", "results", "search_results", "news"):
         v = data.get(key)
         if isinstance(v, list):
             candidates = v
@@ -117,7 +115,7 @@ def unlock_to_markdown(url: str, *, country: str = "us") -> str:
     resp = requests.post(BRIGHTDATA_REQUEST_URL, headers=_headers(), json=payload, timeout=120)
     resp.raise_for_status()
     data = resp.json()
-
+    breakpoint()
     # Different responses may embed content under different keys; handle common ones.
     for key in ("data", "content", "markdown", "result", "body"):
         val = data.get(key)

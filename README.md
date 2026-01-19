@@ -8,24 +8,24 @@ PulseGraph relies on [Bright Data](https://brightdata.com/) to collect real-time
 
 ### Required APIs
 
-1. **SERP API** - Search Engine Results Page API
+1. **[SERP API](https://brightdata.com/products/serp-api)** - Search Engine Results Page API
    - Used to collect search results and trending topics
    - Provides fresh data about companies, events, and market sentiment
-   - [Documentation](https://docs.brightdata.com/serp-api)
+   - [Documentation](https://docs.brightdata.com/scraping-automation/serp-api/introduction)
 
-2. **Web Unlocker API** - Advanced web scraping with automatic unblocking
+2. **[Web Unlocker API](https://brightdata.com/products/web-unlocker)** - Advanced web scraping with automatic unblocking
    - Bypasses anti-bot protection to access web content
    - Enables reliable data extraction from news sites and financial platforms
-   - [Documentation](https://docs.brightdata.com/web-unlocker)
+   - [Documentation](https://docs.brightdata.com/scraping-automation/web-unlocker/introduction)
 
 ### Configuration
 
 Add your Bright Data API credentials to the `.env` file:
 
 ```env
-BRIGHTDATA_API_KEY=your_api_key_here
-BRIGHTDATA_SERP_ENDPOINT=your_serp_endpoint
-BRIGHTDATA_UNLOCKER_ENDPOINT=your_unlocker_endpoint
+BRIGHTDATA_API_KEY=your-api-key
+BRIGHTDATA_SERP_ZONE=your-serp-zone
+BRIGHTDATA_UNLOCKER_ZONE=your-unlocker-zone
 ```
 
 Visit [Bright Data](https://brightdata.com/) to sign up and obtain your API credentials.
